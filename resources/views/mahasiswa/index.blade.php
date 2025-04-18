@@ -9,8 +9,14 @@
 <body class="p-4">
     <div class="container">
         <h1 class="mb-4">Daftar Mahasiswa</h1>
+        @if (Auth::user() && Auth::user()->isAdmin())
+            <p>Halo Admin!</p>
+        @else
+            <p>Halo User biasa!</p>
+        @endif
 
         <a href="{{ route('mahasiswa.create') }}" class="btn btn-primary mb-3">Tambah Mahasiswa</a>
+
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -53,7 +59,12 @@
                 @endforelse
             </tbody>
         </table>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="text-red-500 hover:underline btn btn-danger mb-3">Logout</button>
+        </form>
     </div>
+
 </body>
 
 </html>

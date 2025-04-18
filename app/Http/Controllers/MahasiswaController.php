@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mahasiswa;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class MahasiswaController extends Controller
 {
@@ -85,5 +88,20 @@ class MahasiswaController extends Controller
 
         return redirect()->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil dihapus.');
+    }
+
+
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            if ($user && $user->role !== 'admin' && !in_array($request->route()->getActionMethod(), ['index', 'show'])) {
+                abort(403, 'Akses ditolak.');
+            }
+            return $next($request);
+        });
     }
 }
