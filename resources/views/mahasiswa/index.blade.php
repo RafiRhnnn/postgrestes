@@ -23,6 +23,28 @@
                 {{ session('success') }}
             </div>
         @endif
+        <div>
+            <form method="GET" action="{{ route('mahasiswa.index') }}" class="mb-3 d-flex" style="gap: 10px;">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Mahasiswa..."
+                    class="form-control w-25">
+
+                <select name="sort_by" class="form-select w-25">
+                    <option value="nama" {{ request('sort_by') == 'nama' ? 'selected' : '' }}>Sortir berdasarkan Nama
+                    </option>
+                    <option value="nim" {{ request('sort_by') == 'nim' ? 'selected' : '' }}>Sortir berdasarkan NIM
+                    </option>
+                    <option value="kelas" {{ request('sort_by') == 'kelas' ? 'selected' : '' }}>Sortir berdasarkan
+                        Kelas</option>
+                </select>
+
+                <select name="sort_order" class="form-select w-25">
+                    <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>A-Z</option>
+                    <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>Z-A</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary">Terapkan</button>
+            </form>
+        </div>
 
         <table class="table table-bordered table-striped">
             <thead>
@@ -42,6 +64,13 @@
                         <td>{{ $mhs->nim }}</td>
                         <td>{{ $mhs->kelas }}</td>
                         <td>
+                            @if ($mhs->foto)
+                                <img src="{{ asset('storage/' . $mhs->foto) }}" alt="Foto" width="80">
+                            @else
+                                Tidak ada foto
+                            @endif
+                        </td>
+                        <td>
                             <a href="{{ route('mahasiswa.edit', $mhs->id) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('mahasiswa.destroy', $mhs->id) }}" method="POST"
                                 style="display:inline-block;">
@@ -59,6 +88,9 @@
                 @endforelse
             </tbody>
         </table>
+        <div class="mt-3">
+            {{ $mahasiswas->links() }}
+        </div>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="text-red-500 hover:underline btn btn-danger mb-3">Logout</button>

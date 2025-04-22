@@ -10,7 +10,7 @@
     <div class="container">
         <h1 class="mb-4">Tambah Mahasiswa</h1>
 
-        <form action="{{ route('mahasiswa.store') }}" method="POST">
+        <form action="{{ route('mahasiswa.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama</label>
@@ -23,6 +23,9 @@
             <div class="mb-3">
                 <label for="kelas" class="form-label">Kelas</label>
                 <input type="text" name="kelas" class="form-control" required>
+            </div>
+            <div> <label for="foto">Foto:</label>
+                <input type="file" name="foto" class="form-control">
             </div>
             <button type="submit" class="btn btn-success">Simpan</button>
             <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">Kembali</a>
