@@ -6,16 +6,32 @@ use Illuminate\Http\Request;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\MahasiswaExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 
 class MahasiswaController extends Controller
 {
+
+    public function exportExcel()
+    {
+        return Excel::download(new MahasiswaExport, 'mahasiswa.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $mahasiswas = Mahasiswa::all();
+        $pdf = PDF::loadView('mahasiswa.pdf', compact('mahasiswas'));
+        return $pdf->download('mahasiswa.pdf');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $mahasiswas = Mahasiswa::simplePaginate(8);
         $query = Mahasiswa::query();
 
         // Filter / Search
