@@ -24,6 +24,10 @@
                 <label for="kelas" class="form-label">Kelas</label>
                 <input type="text" name="kelas" class="form-control" required>
             </div>
+            <div class="mb-3">
+                <label for="jurusan" class="form-label">jurusan</label>
+                <input type="text" name="jurusan" class="form-control" required>
+            </div>
             <div> <label for="foto">Foto:</label>
                 <input type="file" name="foto" class="form-control">
             </div>

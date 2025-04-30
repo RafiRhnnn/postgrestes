@@ -54,6 +54,7 @@
                         <th>Nama</th>
                         <th>NIM</th>
                         <th>Kelas</th>
+                        <th>Jurusan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -64,6 +65,7 @@
                             <td>{{ $mhs->nama }}</td>
                             <td>{{ $mhs->nim }}</td>
                             <td>{{ $mhs->kelas }}</td>
+                            <td>{{ $mhs->jurusan }}</td>
                             <td>
                                 @if ($mhs->foto)
                                     <img src="{{ asset('storage/' . $mhs->foto) }}" alt="Foto" width="80">
@@ -80,6 +82,9 @@
                                     <button onclick="return confirm('Yakin ingin menghapus?')"
                                         class="btn btn-danger btn-sm">Hapus</button>
                                 </form>
+                                <a href="{{ route('mahasiswa.cetak.kartu', $mhs->id) }}"
+                                    class="btn btn-primary btn-sm">cetak</a>
+
                             </td>
                         </tr>
                     @empty
@@ -92,7 +97,6 @@
             <div>
                 <a href="{{ route('mahasiswa.export.excel') }}" class="btn btn-success">Export Excel</a>
                 <a href="{{ route('mahasiswa.export.pdf') }}" class="btn btn-danger">Export PDF</a>
-
             </div>
             <div class="d-flex justify-content-center">
                 {!! $mahasiswas->links('pagination::bootstrap-5') !!}

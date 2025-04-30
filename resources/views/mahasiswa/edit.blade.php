@@ -25,6 +25,10 @@
             <label for="kelas" class="form-label">Kelas</label>
             <input type="text" name="kelas" class="form-control" value="{{ $mahasiswa->kelas }}" required>
         </div>
+        <div class="mb-3">
+            <label for="jurusan" class="form-label">Jurusan</label>
+            <input type="text" name="jurusan" class="form-control" value="{{ $mahasiswa->jurusan }}" required>
+        </div>
 
         <div class="mb-3">
             <label for="foto" class="form-label">Foto</label><br>

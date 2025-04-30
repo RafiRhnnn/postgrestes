@@ -4,6 +4,7 @@
         <div class="d-flex align-items-center">
             <a class="nav-link text-white me-3" href="{{ route('mahasiswa.index') }}">Dashboard</a>
             <a class="nav-link text-white me-3" href="{{ route('mahasiswa.create') }}">Tambah Mahasiswa</a>
+            <a class="nav-link text-white me-3" href="{{ route('mahasiswa.statistik') }}">Statistik</a>
             @auth
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

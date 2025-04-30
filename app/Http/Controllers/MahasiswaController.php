@@ -8,12 +8,37 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\MahasiswaExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 
 
 class MahasiswaController extends Controller
 {
+
+    public function cetakKartu($id)
+    {
+        $mahasiswa = Mahasiswa::findOrFail($id);
+
+        $qrcode = QrCode::size(80)->generate($mahasiswa->nim);
+
+        $pdf = Pdf::loadView('mahasiswa.kartu', compact('mahasiswa', 'qrcode'))
+            ->setPaper('A4', 'landscape');
+
+        return $pdf->download('kartu_mahasiswa_' . $mahasiswa->nim . '.pdf');
+    }
+
+    public function statistik()
+    {
+        $statistik = Mahasiswa::select('kelas', DB::raw('count(*) as total'))
+            ->groupBy('kelas')
+            ->pluck('total', 'kelas');
+
+        return view('mahasiswa.statistik', compact('statistik'));
+    }
+
 
     public function exportExcel()
     {
@@ -74,6 +99,7 @@ class MahasiswaController extends Controller
             'nama' => 'required',
             'nim' => 'required|unique:mahasiswas,nim',
             'kelas' => 'required',
+            'jurusan' => 'nullable|string|max:100',
             'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -111,12 +137,13 @@ class MahasiswaController extends Controller
             'nama' => 'required',
             'nim' => 'required|unique:mahasiswas,nim,' . $id,
             'kelas' => 'required',
+            'jurusan' => 'nullable|string|max:100',
             'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $mahasiswa = Mahasiswa::findOrFail($id);
 
-        $data = $request->only(['nama', 'nim', 'kelas']);
+        $data = $request->only(['nama', 'nim', 'kelas', 'jurusan']);
 
         // Kalau ada foto baru diupload
         if ($request->hasFile('foto')) {
